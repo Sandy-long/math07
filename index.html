@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>趣味数学16 - 复杂竖式与平均数问题</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 25px;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 8px;
+        }
+        h2 {
+            color: #2980b9;
+            margin-top: 30px;
+            border-left: 4px solid #3498db;
+            padding-left: 10px;
+        }
+        h3 {
+            color: #16a085;
+            margin-top: 20px;
+        }
+        .section {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .rule {
+            background-color: #f1f9fe;
+            padding: 12px;
+            border-radius: 6px;
+            margin: 15px 0;
+            border-left: 4px solid #3498db;
+        }
+        .example {
+            background-color: #f8f9fa;
+            padding: 12px;
+            border-radius: 6px;
+            margin: 15px 0;
+            border: 1px solid #e0e0e0;
+        }
+        .question {
+            font-weight: bold;
+            color: #e74c3c;
+            margin: 12px 0 5px 0;
+        }
+        .answer {
+            color: #27ae60;
+            margin-left: 20px;
+            padding-left: 10px;
+            border-left: 2px solid #2ecc71;
+        }
+        
+        /* 估算枚举动画 */
+        .estimate-animation {
+            width: 100%;
+            height: 200px;
+            position: relative;
+            margin: 20px auto;
+            background-color: #f5f7fa;
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .estimate-box {
+            width: 80px;
+            height: 80px;
+            background-color: #3498db;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-weight: bold;
+            margin: 0 10px;
+            position: relative;
+            animation: estimatePulse 2s infinite;
+        }
+        .estimate-box:nth-child(1) {
+            animation-delay: 0s;
+        }
+        .estimate-box:nth-child(2) {
+            animation-delay: 0.5s;
+            background-color: #e74c3c;
+        }
+        .estimate-box:nth-child(3) {
+            animation-delay: 1s;
+            background-color: #2ecc71;
+        }
+        
+        /* 乘积倍数动画 */
+        .product-animation {
+            width: 100%;
+            height: 200px;
+            position: relative;
+            margin: 20px auto;
+            background-color: #f5f7fa;
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .product-formula {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2c3e50;
+            animation: productScale 3s infinite;
+        }
+        .product-digit {
+            display: inline-block;
+            animation: digitHighlight 2s infinite;
+            animation-delay: calc(var(--delay) * 0.5s);
+        }
+        
+        /* 拆分验证动画 */
+        .factor-animation {
+            width: 100%;
+            height: 200px;
+            position: relative;
+            margin: 20px auto;
+            background-color: #f5f7fa;
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .factor-box {
+            width: 60px;
+            height: 60px;
+            background-color: #9b59b6;
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-weight: bold;
+            margin: 0 10px;
+            animation: factorRotate 3s infinite;
+        }
+        .factor-times {
+            font-size: 24px;
+            color: #7f8c8d;
+        }
+        
+        /* 小数点动画 */
+        .decimal-animation {
+            width: 100%;
+            height: 200px;
+            position: relative;
+            margin: 20px auto;
+            background-color: #f5f7fa;
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .decimal-number {
+            font-size: 36px;
+            font-weight: bold;
+            color: #2c3e50;
+            position: relative;
+        }
+        .decimal-point {
+            color: #e74c3c;
+            animation: decimalMove 3s infinite;
+        }
+        
+        /* 加减乘除动画 */
+        .operation-animation {
+            width: 100%;
+            height: 200px;
+            position: relative;
+            margin: 20px auto;
+            background-color: #f5f7fa;
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .operation-symbol {
+            font-size: 48px;
+            color: #3498db;
+            margin: 0 20px;
+            animation: operationSpin 2s infinite;
+        }
+        .operation-number {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        /* 凑整法动画 */
+        .rounding-animation {
+            width: 100%;
+            height: 200px;
+            position: relative;
+            margin: 20px auto;
+            background-color: #f5f7fa;
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .rounding-pair {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0 15px;
+            animation: roundingBounce 2s infinite;
+            animation-delay: calc(var(--delay) * 0.3s);
+        }
+        .rounding-number {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        .rounding-result {
+            font-size: 18px;
+            color: #27ae60;
+            margin-top: 10px;
+        }
+        
+        /* 提取公因动画 */
+        .factor-extract-animation {
+            width: 100%;
+            height: 200px;
+            position: relative;
+            margin: 20px auto;
+            background-color: #f5f7fa;
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .factor-equation {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        .factor-highlight {
+            color: #e74c3c;
+            animation: factorHighlight 2s infinite;
+        }
+        
+        /* 平均数动画 */
+        .average-animation {
+            width: 100%;
+            height: 200px;
+            position: relative;
+            margin: 20px auto;
+            background-color: #f5f7fa;
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .average-bar {
+            width: 40px;
+            background-color: #3498db;
+            border-radius: 5px 5px 0 0;
+            position: relative;
+            margin: 0 10px;
+            animation: averageGrow 3s infinite;
+            animation-delay: calc(var(--delay) * 0.5s);
+        }
+        .average-line {
+            width: 100%;
+            height: 2px;
+            background-color: #e74c3c;
+            position: absolute;
+            left: 0;
+            animation: averageLine 3s infinite;
+        }
+        
+        /* 总数变化动画 */
+        .total-change-animation {
+            width: 100%;
+            height: 200px;
+            position: relative;
+            margin: 20px auto;
+            background-color: #f5f7fa;
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .total-circle {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background-color: #9b59b6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-weight: bold;
+            margin: 0 15px;
+            position: relative;
+            animation: totalPulse 3s infinite;
+        }
+        .total-plus {
+            font-size: 30px;
+            color: #7f8c8d;
+        }
+        
+        /* 移多补少动画 */
+        .balance-animation {
+            width: 100%;
+            height: 200px;
+            position: relative;
+            margin: 20px auto;
+            background-color: #f5f7fa;
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .balance-scale {
+            width: 200px;
+            height: 10px;
+            background-color: #7f8c8d;
+            position: relative;
+            border-radius: 5px;
+        }
+        .balance-scale::before, .balance-scale::after {
+            content: '';
+            position: absolute;
+            width: 60px;
+            height: 10px;
+            background-color: #7f8c8d;
+            top: -20px;
+        }
+        .balance-scale::before {
+            left: -20px;
+            transform: rotate(30deg);
+        }
+        .balance-scale::after {
+            right: -20px;
+            transform: rotate(-30deg);
+        }
+        .balance-ball {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            position: absolute;
+            top: -60px;
+            animation: balanceMove 4s infinite ease-in-out;
+        }
+        .balance-ball:nth-child(1) {
+            left: 40px;
+            background-color: #3498db;
+        }
+        .balance-ball:nth-child(2) {
+            right: 40px;
+            background-color: #e74c3c;
+        }
+        .balance-arrow {
+            position: absolute;
+            bottom: 30px;
+            font-size: 24px;
+            color: #2ecc71;
+            animation: balanceArrow 2s infinite;
+        }
+        
+        /* 加权平均动画 */
+        .weighted-animation {
+            width: 100%;
+            height: 200px;
+            position: relative;
+            margin: 20px auto;
+            background-color: #f5f7fa;
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .weighted-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0 15px;
+            animation: weightedBounce 2s infinite;
+            animation-delay: calc(var(--delay) * 0.3s);
+        }
+        .weighted-score {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        .weighted-count {
+            font-size: 16px;
+            color: #7f8c8d;
+            margin-top: 5px;
+        }
+        .weighted-avg {
+            position: absolute;
+            bottom: 30px;
+            font-weight: bold;
+            color: #e74c3c;
+            animation: weightedAvg 3s infinite;
+        }
+        
+        /* 动画关键帧 */
+        @keyframes estimatePulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        @keyframes productScale {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        @keyframes digitHighlight {
+            0%, 100% { color: #2c3e50; }
+            50% { color: #e74c3c; }
+        }
+        @keyframes factorRotate {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(5deg); }
+        }
+        @keyframes decimalMove {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(10px); }
+        }
+        @keyframes operationSpin {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(10deg); }
+        }
+        @keyframes roundingBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        @keyframes factorHighlight {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        @keyframes averageGrow {
+            0%, 100% { height: var(--height); }
+            50% { height: calc(var(--height) + 10px); }
+        }
+        @keyframes averageLine {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        @keyframes totalPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        @keyframes balanceMove {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+        @keyframes balanceArrow {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        @keyframes weightedBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        @keyframes weightedAvg {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+    </style>
+</head>
+<body>
+    <h1>趣味数学17</h1>
+    
+    <div class="section">
+        <h2>复杂竖式</h2>
+        
+        <h3>1、估算枚举：从首位或末位入手</h3>
+        <div class="estimate-animation">
+            <div class="estimate-box">2</div>
+            <div class="estimate-box">×</div>
+            <div class="estimate-box">3</div>
+        </div>
+        
+        <div class="rule">
+            <strong>运算法则：</strong>从数字的首位或末位入手进行估算和枚举
+        </div>
+        
+        <div class="example">
+            <div class="question">两位数×一位数≈200，首位可能是多少</div>
+            <div class="answer">2或3</div>
+            
+            <div class="question">一个积为512，末位是2，尾数可能是多少</div>
+            <div class="answer">2或6×2</div>
+            
+            <div class="question">枚举5×？=215，最接近的是多少</div>
+            <div class="answer">43</div>
+        </div>
+        
+        <h3>2、乘积倍数：分析各位关系</h3>
+        <div class="product-animation">
+            <div class="product-formula">
+                <span class="product-digit" style="--delay: 0">A</span>
+                <span class="product-digit" style="--delay: 1">B</span>
+                <span class="product-digit" style="--delay: 2">×</span>
+                <span class="product-digit" style="--delay: 3">C</span>
+                <span class="product-digit" style="--delay: 4">=</span>
+                <span class="product-digit" style="--delay: 5">6</span>
+                <span class="product-digit" style="--delay: 6">0</span>
+                <span class="product-digit" style="--delay: 7">0</span>
+            </div>
+        </div>
+        
+        <div class="rule">
+            <strong>运算法则：</strong>分析数字各位之间的关系，特别是乘积的倍数关系
+        </div>
+        
+        <div class="example">
+            <div class="question">AB×C=600，若C=3，则AB可能是多少</div>
+            <div class="answer">200</div>
+            
+            <div class="question">两数相乘末位为0，说明其中至少一个末位是多少</div>
+            <div class="answer">5或0</div>
+            
+            <div class="question">乘积末尾为8，个位可能是多少</div>
+            <div class="answer">2或4</div>
+        </div>
+        
+        <h3>3、拆分验证：因数分解尝试</h3>
+        <div class="factor-animation">
+            <div class="factor-box">8</div>
+            <div class="factor-times">×</div>
+            <div class="factor-box">9</div>
+            <div class="factor-times">=</div>
+            <div class="factor-box">72</div>
+        </div>
+        
+        <div class="rule">
+            <strong>运算法则：</strong>通过因数分解尝试拆分数字，验证可能的组合
+        </div>
+        
+        <div class="example">
+            <div class="question">72=？×？，可拆为多少</div>
+            <div class="answer">8×9</div>
+            
+            <div class="question">81=？×？，一个因数是多少</div>
+            <div class="answer">9</div>
+            
+            <div class="question">判断：96能否被8整除</div>
+            <div class="answer">能</div>
+        </div>
+    </div>
+    
+    <div class="section">
+        <h2>小数巧算</h2>
+        
+        <h3>1、小数点：乘右移，除左移</h3>
+        <div class="decimal-animation">
+            <div class="decimal-number">
+                0<span class="decimal-point">.</span>2 × 10 = 2
+            </div>
+        </div>
+        
+        <div class="rule">
+            <strong>运算法则：</strong>乘法小数点向右移动，除法小数点向左移动
+        </div>
+        
+        <div class="example">
+            <div class="question">0.2×10是多少</div>
+            <div class="answer">2</div>
+            
+            <div class="question">2.5÷10是多少</div>
+            <div class="answer">0.25</div>
+            
+            <div class="question">0.06×100是多少</div>
+            <div class="answer">6</div>
+        </div>
+        
+        <h3>2、加减乘除：对齐小数点计算</h3>
+        <div class="operation-animation">
+            <div class="operation-number">2.4</div>
+            <div class="operation-symbol">+</div>
+            <div class="operation-number">1.56</div>
+        </div>
+        
+        <div class="rule">
+            <strong>运算法则：</strong>加减法要对齐小数点，乘法按整数计算后确定小数位
+        </div>
+        
+        <div class="example">
+            <div class="question">2.4+1.56是多少</div>
+            <div class="answer">3.96</div>
+            
+            <div class="question">3.5−0.75是多少</div>
+            <div class="answer">2.75</div>
+            
+            <div class="question">0.6×0.5是多少</div>
+            <div class="answer">0.30</div>
+        </div>
+        
+        <h3>3、凑整法：0.25×4=1 等</h3>
+        <div class="rounding-animation">
+            <div class="rounding-pair" style="--delay: 0">
+                <div class="rounding-number">0.25 × 4</div>
+                <div class="rounding-result">= 1</div>
+            </div>
+            <div class="rounding-pair" style="--delay: 1">
+                <div class="rounding-number">0.5 × 8</div>
+                <div class="rounding-result">= 4</div>
+            </div>
+            <div class="rounding-pair" style="--delay: 2">
+                <div class="rounding-number">0.75 × 4</div>
+                <div class="rounding-result">= 3</div>
+            </div>
+        </div>
+        
+        <div class="rule">
+            <strong>运算法则：</strong>利用特殊小数组合凑整简化计算
+        </div>
+        
+        <div class="example">
+            <div class="question">0.5×8是多少</div>
+            <div class="answer">4</div>
+            
+            <div class="question">0.2×5是多少</div>
+            <div class="answer">1</div>
+            
+            <div class="question">0.75×4是多少</div>
+            <div class="answer">3</div>
+        </div>
+        
+        <h3>4、提取公因：相同小数部分提取</h3>
+        <div class="factor-extract-animation">
+            <div class="factor-equation">
+                <span class="factor-highlight">0.2</span>×a + <span class="factor-highlight">0.2</span>×b = <span class="factor-highlight">0.2</span>×(a + b)
+            </div>
+        </div>
+        
+        <div class="rule">
+            <strong>运算法则：</strong>提取相同的小数部分进行合并计算
+        </div>
+        
+        <div class="example">
+            <div class="question">0.2×a + 0.2×b 是多少</div>
+            <div class="answer">0.2×(a + b)</div>
+            
+            <div class="question">0.5×6 + 0.5×4 是多少</div>
+            <div class="answer">5</div>
+            
+            <div class="question">0.25×8 + 0.25×2 是多少</div>
+            <div class="answer">2.5</div>
+        </div>
+    </div>
+    
+    <div class="section">
+        <h2>平均数问题</h2>
+        
+        <h3>1、基本公式：平均数=总数÷个数</h3>
+        <div class="average-animation">
+            <div class="average-bar" style="--height: 80px; --delay: 0"></div>
+            <div class="average-bar" style="--height: 60px; --delay: 1"></div>
+            <div class="average-bar" style="--height: 100px; --delay: 2"></div>
+            <div class="average-bar" style="--height: 80px; --delay: 3"></div>
+            <div class="average-line"></div>
+        </div>
+        
+        <div class="rule">
+            <strong>运算法则：</strong>平均数等于总数除以个数
+        </div>
+        
+        <div class="example">
+            <div class="question">总分100，5人，平均是多少</div>
+            <div class="answer">20</div>
+            
+            <div class="question">总分72，平均9人，每人是多少</div>
+            <div class="answer">8</div>
+            
+            <div class="question">平均值15，10人，总分是多少</div>
+            <div class="answer">150</div>
+        </div>
+        
+        <h3>2、总数变化：新平均=(原总+新数)÷(原个数+1)</h3>
+        <div class="total-change-animation">
+            <div class="total-circle">50</div>
+            <div class="total-plus">+</div>
+            <div class="total-circle">20</div>
+        </div>
+        
+        <div class="rule">
+            <strong>运算法则：</strong>新平均数等于原总数加新数除以原个数加1
+        </div>
+        
+        <div class="example">
+            <div class="question">5人平均10，新加20，新平均是多少</div>
+            <div class="answer">11.67</div>
+            
+            <div class="question">原平均8，加24，总变72，新平均是多少</div>
+            <div class="answer">12</div>
+            
+            <div class="question">原4人平均16，加1人得20，新平均是多少</div>
+            <div class="answer">16.8</div>
+        </div>
+        
+        <h3>3、移多补少：调整使各部分相等</h3>
+        <div class="balance-animation">
+            <div class="balance-ball"></div>
+            <div class="balance-scale"></div>
+            <div class="balance-ball"></div>
+            <div class="balance-arrow">⇅</div>
+        </div>
+        
+        <div class="rule">
+            <strong>运算法则：</strong>通过移动数量使各部分达到平均值
+        </div>
+        
+        <div class="example">
+            <div class="question">A有10，B有6，平均是多少，A应给B多少</div>
+            <div class="answer">8，2</div>
+            
+            <div class="question">A=20，B=12，移几给平均是多少</div>
+            <div class="answer">4</div>
+            
+            <div class="question">24与16平均分是多少，差是多少</div>
+            <div class="answer">20，4</div>
+        </div>
+        
+        <h3>4、加权平均：考虑权重计算</h3>
+        <div class="weighted-animation">
+            <div class="weighted-item" style="--delay: 0">
+                <div class="weighted-score">80</div>
+                <div class="weighted-count">2人</div>
+            </div>
+            <div class="weighted-item" style="--delay: 1">
+                <div class="weighted-score">90</div>
+                <div class="weighted-count">3人</div>
+            </div>
+            <div class="weighted-avg">平均: 86</div>
+        </div>
+        
+        <div class="rule">
+            <strong>运算法则：</strong>考虑不同分数的权重计算总平均
+        </div>
+        
+        <div class="example">
+         
+            
+            <div class="question">成绩60（1人）、70（2人）、80（1人）平均是多少</div>
+            <div class="answer">70</div>
+            
+            <div class="question">两组平均40和60，人数相等，合并平均是多少</div>
+            <div class="answer">50</div>   <div class="question">A得80分2人，B得90分3人，总平均是多少</div>
+            <div class="answer">86</div>
+			
+			   <div class="question">一个家庭月支出情况如下：
+
+房租4000元，占总支出40%
+
+食物支出2500元，占30%
+
+交通支出1500元，占20%
+
+其他支出若干，占10%，若全月平均支出为3400元，求“其他支出”为多少元？</div>
+            <div class="answer">7500</div>
+        </div>
+    </div>
+</body>
+</html>
