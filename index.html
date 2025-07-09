@@ -57,11 +57,44 @@
             color: #e74c3c;
             margin: 12px 0 5px 0;
         }
+        .answer-container {
+            background: linear-gradient(135deg, #f0fff4 0%, #e6fffa 100%);
+            border: 1px solid #d1fae5;
+            border-radius: 8px;
+            padding: 5px 15px;
+            margin: 15px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .answer-container:hover {
+            background: linear-gradient(135deg, #dcffe4 0%, #c6f6d5 100%);
+            transform: translateX(5px);
+        }
+        .answer-prompt {
+            color: #10b981;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            padding: 10px 0;
+        }
+        .answer-prompt:before {
+            content: "✨";
+            margin-right: 10px;
+            font-size: 1.2em;
+        }
         .answer {
-            color: #27ae60;
+            color: #0f9d58;
             margin-left: 20px;
-            padding-left: 10px;
-            border-left: 2px solid #2ecc71;
+            padding: 10px 15px;
+            background-color: rgba(16, 185, 129, 0.1);
+            border-left: 3px solid #10b981;
+            border-radius: 0 8px 8px 0;
+            display: none;
+            font-weight: bold;
+            animation: fadeIn 0.5s ease;
+        }
+        .show-answer .answer {
+            display: block;
         }
         
         /* 估算枚举动画 */
@@ -497,6 +530,10 @@
             0%, 100% { transform: scale(1); }
             50% { transform: scale(1.1); }
         }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
     </style>
 </head>
 <body>
@@ -517,14 +554,23 @@
         </div>
         
         <div class="example">
-            <div class="question">两位数×一位数≈200，首位可能是多少</div>
-            <div class="answer">2或3</div>
+            <div class="question">某积是 512，末位是2，猜末位因数可能是多少？</div>
+            <div class="answer-container">
+                <div class="answer-prompt">点击显示答案</div>
+                <div class="answer">2或6</div>
+            </div>
             
-            <div class="question">一个积为512，末位是2，尾数可能是多少</div>
-            <div class="answer">2或6×2</div>
+            <div class="question">已知 5 × ? = 215，哪个乘数最接近？</div>
+            <div class="answer-container">
+                <div class="answer-prompt">点击显示答案</div>
+                <div class="answer">43</div>
+            </div>
             
-            <div class="question">枚举5×？=215，最接近的是多少</div>
-            <div class="answer">43</div>
+            <div class="question">某个数乘以3，结果末位是9，这个数的末位可能是多少？</div>
+            <div class="answer-container">
+                <div class="answer-prompt">点击显示答案</div>
+                <div class="answer">3</div>
+            </div>
         </div>
         
         <h3>2、乘积倍数：分析各位关系</h3>
@@ -546,14 +592,23 @@
         </div>
         
         <div class="example">
-            <div class="question">AB×C=600，若C=3，则AB可能是多少</div>
-            <div class="answer">200</div>
+            <div class="question">若 AB × C = 600，C = 3，则 AB 可能是多少？</div>
+            <div class="answer-container">
+                <div class="answer-prompt">点击显示答案</div>
+                <div class="answer">200</div>
+            </div>
             
-            <div class="question">两数相乘末位为0，说明其中至少一个末位是多少</div>
-            <div class="answer">5或0</div>
+            <div class="question">某数乘以一个一位数，积的末位是8，这个数的个位可能是多少？</div>
+            <div class="answer-container">
+                <div class="answer-prompt">点击显示答案</div>
+                <div class="answer">2或4</div>
+            </div>
             
-            <div class="question">乘积末尾为8，个位可能是多少</div>
-            <div class="answer">2或4</div>
+            <div class="question">若 A × B = 252，且 B 是 7 的倍数，则 A 可能是多少？</div>
+            <div class="answer-container">
+                <div class="answer-prompt">点击显示答案</div>
+                <div class="answer">36</div>
+            </div>
         </div>
         
         <h3>3、拆分验证：因数分解尝试</h3>
@@ -570,115 +625,23 @@
         </div>
         
         <div class="example">
-            <div class="question">72=？×？，可拆为多少</div>
-            <div class="answer">8×9</div>
-            
-            <div class="question">81=？×？，一个因数是多少</div>
-            <div class="answer">9</div>
-            
-            <div class="question">判断：96能否被8整除</div>
-            <div class="answer">能</div>
-        </div>
-    </div>
-    
-    <div class="section">
-        <h2>小数巧算</h2>
-        
-        <h3>1、小数点：乘右移，除左移</h3>
-        <div class="decimal-animation">
-            <div class="decimal-number">
-                0<span class="decimal-point">.</span>2 × 10 = 2
+            <div class="question">把 36 拆成两数相乘，共有几种不同组合？</div>
+            <div class="answer-container">
+                <div class="answer-prompt">点击显示答案</div>
+                <div class="answer">5对</div>
             </div>
-        </div>
-        
-        <div class="rule">
-            <strong>运算法则：</strong>乘法小数点向右移动，除法小数点向左移动
-        </div>
-        
-        <div class="example">
-            <div class="question">0.2×10是多少</div>
-            <div class="answer">2</div>
             
-            <div class="question">2.5÷10是多少</div>
-            <div class="answer">0.25</div>
-            
-            <div class="question">0.06×100是多少</div>
-            <div class="answer">6</div>
-        </div>
-        
-        <h3>2、加减乘除：对齐小数点计算</h3>
-        <div class="operation-animation">
-            <div class="operation-number">2.4</div>
-            <div class="operation-symbol">+</div>
-            <div class="operation-number">1.56</div>
-        </div>
-        
-        <div class="rule">
-            <strong>运算法则：</strong>加减法要对齐小数点，乘法按整数计算后确定小数位
-        </div>
-        
-        <div class="example">
-            <div class="question">2.4+1.56是多少</div>
-            <div class="answer">3.96</div>
-            
-            <div class="question">3.5−0.75是多少</div>
-            <div class="answer">2.75</div>
-            
-            <div class="question">0.6×0.5是多少</div>
-            <div class="answer">0.30</div>
-        </div>
-        
-        <h3>3、凑整法：0.25×4=1 等</h3>
-        <div class="rounding-animation">
-            <div class="rounding-pair" style="--delay: 0">
-                <div class="rounding-number">0.25 × 4</div>
-                <div class="rounding-result">= 1</div>
+            <div class="question">一个面积为 60 的长方形，长和宽都是整数，可能的长宽组合有哪些？</div>
+            <div class="answer-container">
+                <div class="answer-prompt">点击显示答案</div>
+                <div class="answer">6种整数组合</div>
             </div>
-            <div class="rounding-pair" style="--delay: 1">
-                <div class="rounding-number">0.5 × 8</div>
-                <div class="rounding-result">= 4</div>
+            
+            <div class="question">45 能否拆成 6 × ？ 的形式？</div>
+            <div class="answer-container">
+                <div class="answer-prompt">点击显示答案</div>
+                <div class="answer">不能</div>
             </div>
-            <div class="rounding-pair" style="--delay: 2">
-                <div class="rounding-number">0.75 × 4</div>
-                <div class="rounding-result">= 3</div>
-            </div>
-        </div>
-        
-        <div class="rule">
-            <strong>运算法则：</strong>利用特殊小数组合凑整简化计算
-        </div>
-        
-        <div class="example">
-            <div class="question">0.5×8是多少</div>
-            <div class="answer">4</div>
-            
-            <div class="question">0.2×5是多少</div>
-            <div class="answer">1</div>
-            
-            <div class="question">0.75×4是多少</div>
-            <div class="answer">3</div>
-        </div>
-        
-        <h3>4、提取公因：相同小数部分提取</h3>
-        <div class="factor-extract-animation">
-            <div class="factor-equation">
-                <span class="factor-highlight">0.2</span>×a + <span class="factor-highlight">0.2</span>×b = <span class="factor-highlight">0.2</span>×(a + b)
-            </div>
-        </div>
-        
-        <div class="rule">
-            <strong>运算法则：</strong>提取相同的小数部分进行合并计算
-        </div>
-        
-        <div class="example">
-            <div class="question">0.2×a + 0.2×b 是多少</div>
-            <div class="answer">0.2×(a + b)</div>
-            
-            <div class="question">0.5×6 + 0.5×4 是多少</div>
-            <div class="answer">5</div>
-            
-            <div class="question">0.25×8 + 0.25×2 是多少</div>
-            <div class="answer">2.5</div>
         </div>
     </div>
     
@@ -700,13 +663,22 @@
         
         <div class="example">
             <div class="question">总分100，5人，平均是多少</div>
-            <div class="answer">20</div>
+            <div class="answer-container">
+                <div class="answer-prompt">点击显示答案</div>
+                <div class="answer">20</div>
+            </div>
             
-            <div class="question">总分72，平均9人，每人是多少</div>
-            <div class="answer">8</div>
+            <div class="question">某班有40名学生，前30人平均成绩是80分，后10人平均成绩是90分，全班平均成绩是多少？</div>
+            <div class="answer-container">
+                <div class="answer-prompt">点击显示答案</div>
+                <div class="answer">82.5</div>
+            </div>
             
-            <div class="question">平均值15，10人，总分是多少</div>
-            <div class="answer">150</div>
+            <div class="question">5人平均工资是4000元，加入一名新员工后，平均工资变为4200元。问新员工工资是多少？</div>
+            <div class="answer-container">
+                <div class="answer-prompt">点击显示答案</div>
+                <div class="answer">5200元</div>
+            </div>
         </div>
         
         <h3>2、总数变化：新平均=(原总+新数)÷(原个数+1)</h3>
@@ -721,14 +693,23 @@
         </div>
         
         <div class="example">
-            <div class="question">5人平均10，新加20，新平均是多少</div>
-            <div class="answer">11.67</div>
+            <div class="question">某班5人平均成绩为80分，新来一人得90分，新平均是多少？</div>
+            <div class="answer-container">
+                <div class="answer-prompt">点击显示答案</div>
+                <div class="answer">81.67</div>
+            </div>
             
-            <div class="question">原平均8，加24，总变72，新平均是多少</div>
-            <div class="answer">12</div>
+            <div class="question">已有4人平均分是70，第五人加入后，平均变为72，问新来的这个人得了多少分？</div>
+            <div class="answer-container">
+                <div class="answer-prompt">点击显示答案</div>
+                <div class="answer">80</div>
+            </div>
             
-            <div class="question">原4人平均16，加1人得20，新平均是多少</div>
-            <div class="answer">16.8</div>
+            <div class="question">原10人平均为82，新来一人后平均变成83，新人得了多少分？</div>
+            <div class="answer-container">
+                <div class="answer-prompt">点击显示答案</div>
+                <div class="answer">93</div>
+            </div>
         </div>
         
         <h3>3、移多补少：调整使各部分相等</h3>
@@ -744,14 +725,23 @@
         </div>
         
         <div class="example">
-            <div class="question">A有10，B有6，平均是多少，A应给B多少</div>
-            <div class="answer">8，2</div>
+            <div class="question">甲有12颗糖，乙有6颗糖，若要两人一样多，甲要给乙几颗？</div>
+            <div class="answer-container">
+                <div class="answer-prompt">点击显示答案</div>
+                <div class="answer">3颗</div>
+            </div>
             
-            <div class="question">A=20，B=12，移几给平均是多少</div>
-            <div class="answer">4</div>
+            <div class="question">一桶有14升水，另一桶有6升水，要让两桶水一样多，需倒多少？</div>
+            <div class="answer-container">
+                <div class="answer-prompt">点击显示答案</div>
+                <div class="answer">4L</div>
+            </div>
             
-            <div class="question">24与16平均分是多少，差是多少</div>
-            <div class="answer">20，4</div>
+            <div class="question">4人分别有：6元，10元，14元，20元，如何转账后人人平分？</div>
+            <div class="answer-container">
+                <div class="answer-prompt">点击显示答案</div>
+                <div class="answer">6需得6.5元，10需得2.5元，14需出1.5元，20需出7.5元</div>
+            </div>
         </div>
         
         <h3>4、加权平均：考虑权重计算</h3>
@@ -772,26 +762,48 @@
         </div>
         
         <div class="example">
-         
+            <div class="question">甲班30人，平均成绩85分；乙班20人，平均成绩90分，求两个班的总平均成绩？</div>
+            <div class="answer-container">
+                <div class="answer-prompt">点击显示答案</div>
+                <div class="answer">87</div>
+            </div>
             
-            <div class="question">成绩60（1人）、70（2人）、80（1人）平均是多少</div>
-            <div class="answer">70</div>
+            <div class="question">某产品前40分钟平均产量为60件，后20分钟平均为90件，问一小时的平均产量是多少？</div>
+            <div class="answer-container">
+                <div class="answer-prompt">点击显示答案</div>
+                <div class="answer">70</div>
+            </div>
             
-            <div class="question">两组平均40和60，人数相等，合并平均是多少</div>
-            <div class="answer">50</div>   <div class="question">A得80分2人，B得90分3人，总平均是多少</div>
-            <div class="answer">86</div>
-			
-			   <div class="question">一个家庭月支出情况如下：
-
-房租4000元，占总支出40%
-
-食物支出2500元，占30%
-
-交通支出1500元，占20%
-
-其他支出若干，占10%，若全月平均支出为3400元，求“其他支出”为多少元？</div>
-            <div class="answer">7500</div>
+            <div class="question">学生期末成绩按"作业20%、期中30%、期末50%"加权。若作业80，期中70，期末90，问总成绩？</div>
+            <div class="answer-container">
+                <div class="answer-prompt">点击显示答案</div>
+                <div class="answer">82</div>
+            </div>
+            
+            <div class="question">某校两个年级合办活动，一年级有50人，平均花费20元；二年级有30人，平均花费40元，问总平均花费？</div>
+            <div class="answer-container">
+                <div class="answer-prompt">点击显示答案</div>
+                <div class="answer">27.5</div>
+            </div>
+            
+            <div class="question">一个家庭月支出情况如下：房租4000元，占总支出40%；食物支出2500元，占30%；交通支出1500元，占20%；其他支出若干，占10%，若全月平均支出为3400元，求"其他支出"为多少元？</div>
+            <div class="answer-container">
+                <div class="answer-prompt">点击显示答案</div>
+                <div class="answer">7500</div>
+            </div>
         </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 答案显示功能
+            document.body.addEventListener('click', function(e) {
+                const container = e.target.closest('.answer-container');
+                if(container) {
+                    container.classList.toggle('show-answer');
+                }
+            });
+        });
+    </script>
 </body>
 </html>
